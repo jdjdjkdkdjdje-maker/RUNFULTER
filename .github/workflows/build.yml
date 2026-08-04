@@ -19,13 +19,17 @@ jobs:
       - name: Generate missing platform folders
         run: flutter create --platforms=android --project-name=uzum_tezkor_customer .
 
-      - name: Force Android SDK 36
+      - name: Force Android SDK 36 globally
         run: |
+          echo "flutter.compileSdkVersion=36" >> android/local.properties
+          echo "flutter.targetSdkVersion=36" >> android/local.properties
           sed -i '/compileSdk[[:space:]]*=/d' android/app/build.gradle.kts
           sed -i '/^android {/a\    compileSdk = 36' android/app/build.gradle.kts
           sed -i '/targetSdk[[:space:]]*=/d' android/app/build.gradle.kts
           sed -i '/defaultConfig {/a\        targetSdk = 36' android/app/build.gradle.kts
-          echo "---- build.gradle.kts natijasi ----"
+          echo "---- local.properties ----"
+          cat android/local.properties
+          echo "---- build.gradle.kts ----"
           cat android/app/build.gradle.kts
 
       - name: Get dependencies
